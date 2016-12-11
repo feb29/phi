@@ -1,23 +1,16 @@
 package phi
 
-import "time"
+import (
+	"math/rand"
+	"time"
+)
 
-func Estimate(m Monitor, x time.Duration) Value {
-	switch t := m.(type) {
-	case *monitor:
-		return t.estimate(milliSeconds(x))
-	}
-	return 0
+func RandomFloat64(stddev, mean float64) float64 {
+	return rand.NormFloat64()*stddev + mean
 }
 
-func Duration(pm Monitor, threshold Value) time.Duration {
-	switch t := pm.(type) {
-	case *monitor:
-		d := 10 * time.Millisecond
-		for t.estimate(milliSeconds(d)) < threshold {
-			d += 10 * time.Millisecond
-		}
-		return d
-	}
-	return 0
+func RandomDuration(stddev, mean float64) time.Duration {
+	return time.Duration(RandomFloat64(stddev, mean))
 }
+
+var Truncate = truncate
