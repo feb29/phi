@@ -62,7 +62,7 @@ func (xs *signals) putn(i int, x float64) (d float64) {
 	return
 }
 
-func (xs *signals) reset(size int) {
+func (xs *signals) reset() {
 	xs.levels = xs.levels[:]
 	xs.trends = xs.trends[:]
 }
