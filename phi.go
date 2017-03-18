@@ -9,12 +9,14 @@ import (
 	"time"
 )
 
+// FailureDetector can be used to detect failure of remote server.
 type FailureDetector interface {
 	Failure() float64
 	Observed(time.Duration)
 }
 
 var (
+	// DefaultThreshold is a default threshold to determine healthy or unhealthy.
 	DefaultThreshold = 16.0
 
 	_ FailureDetector = (*Monitor)(nil)
@@ -22,11 +24,20 @@ var (
 
 // TODO: Mean Squared Error
 
+// Monitor implements `Holt's Linear Method` (DoubleExponentialSmoothing).
+// `Holt's Linear Method` is good for non-seasonal data with a trend.
+//
+//    Level:    L[i]   = a*X[i] + (1−a)*(L[i-1] + T[i-1])
+//    Trend:    T[i]   = b*(L[i] − L[i−1]) + (1−b)*T[i−1]
+//    Forecast: F[i+1] = L[i] + T[i]
+//
+// a and b are factor for smoothing observed signals.
 type Monitor struct {
 	*signals
 	sum, sos float64 // sum of square
 }
 
+// NewMonitor returns a new Monitor with given factors.
 func NewMonitor(size int, level, trend float64) *Monitor {
 	return &Monitor{signals: initsig(size, level, trend)}
 }
@@ -88,6 +99,7 @@ func (e estimator) duration(sec int, threshold float64) time.Duration {
 	return fromint(j - 1)
 }
 
+// Observed store duration and update internal state.
 func (m *Monitor) Observed(d time.Duration) {
 	x := m.put(tomillis(d))
 	m.sum += x

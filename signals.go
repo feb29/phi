@@ -1,11 +1,5 @@
 package phi
 
-// signals implements `Holt's Linear Method` (DoubleExponentialSmoothing).
-// `Holt's Linear Method` is good for non-seasonal data with a trend.
-//
-//    Level:    L[i]   = a*X[i] + (1−a)*(L[i-1] + T[i-1])
-//    Trend:    T[i]   = b*(L[i] − L[i−1]) + (1−b)*T[i−1]
-//    Forecast: F[i+1] = L[i] + T[i]
 type signals struct {
 	sigs []float64
 	// level factor, trend factor

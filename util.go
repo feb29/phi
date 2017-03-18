@@ -33,7 +33,7 @@ func (m dumpmonitor) String() string {
 		for i := 0; i < max; i++ {
 			level := m.levels[i]
 			trend := m.trends[i]
-			fmt.Fprintf(t, "% 5d\t%+f\t%+f\t%+f\t% f\t\n",
+			fmt.Fprintf(t, "% 5d\t% f\t% f\t%+f\t% f\t\n",
 				i, m.sigs[i], level, trend, level+trend,
 			)
 		}
