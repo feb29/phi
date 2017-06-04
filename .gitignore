@@ -32,3 +32,6 @@ _testmain.go
 vendor/
 
 
+/target/
+**/*.rs.bk
+Cargo.lock
